@@ -10,16 +10,17 @@ This provides a superior form of debugging.
 In your sketch, decide what level of debugging you want. Choose from the following debug levels:
 
 ```
-E - errors that you really, really should see
-W - warnings that help you find out what's going wrong
-D - debugging messages that you only want to see when debugging
-V - verbose meaning everything is printed
+ERRORS - errors that you really, really should see
+WARNINGS - warnings that help you find out what's going wrong
+DEBUGGING - debugging messages that you only want to see when debugging
+VERBOSE - verbose meaning everything is printed
 ```
+Each level will also print all the statements in the levels above it (so Warnings will also print Errors but not Debugging or Verbose messages).  
 
-Initially, set it to "verbose" so that **all** debugging messages appear:
+Initially, in your main sketch, set the debugging level to "verbose" so that **all** debugging messages appear:
 
 ```
-#define DEBUGLEVEL DEBUGLEVEL_DEBUGGING
+#define DEBUGLEVEL DEBUGLEVEL_VERBOSE
 ```
 
 Then include the supporting, simple code:
@@ -43,7 +44,7 @@ The output will look something like this (along with the function and line numbe
 [tempConversion:32] Unable to get temp reading, response: -1
 ```
 
-You can amend the code to your liking and, perhaps, output the debug level along with the message, like this:
+You can amend the code to your liking and, perhaps, output the **debug level** along with the message, like this:
 ```
 [D][loop:32] Main loop running
 ```
