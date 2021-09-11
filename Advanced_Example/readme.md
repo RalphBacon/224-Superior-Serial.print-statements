@@ -1,4 +1,4 @@
-# Example 2
+# Example 2 - Updated!
 
 This provides a superior form of debugging.
 
@@ -36,17 +36,30 @@ debugW("A warning message that doesn't include a new line");
 debuglnD("A general debugging level statement");
 debuglnV("A verbose message, usually reserved for nitty, gritty debugging);
 ```
-The output will look something like this (along with the function and line number, remember):
+The output will look something like this (along with the debug level, function name and line number):
 
-```
-[loop:32] Main loop running
-[addOneToCount:4] Adding one to count
-[tempConversion:32] Unable to get temp reading, response: -1
-```
-
-You can amend the code to your liking and, perhaps, output the **debug level** along with the message, like this:
 ```
 [D][loop:32] Main loop running
+[V][addOneToCount:4] Adding one to count
+[E][tempConversion:32] Unable to get temp reading, response: -1
+```
+
+Actual Real World example output from CoolTerm which can add timestamps as shown here:
+```
+15:25:00.947 --> [D][setup:89] Setup started
+15:25:00.947 --> [D][setup:91] Setting ESP32 as Access Point and Station, no power savings
+15:25:01.076 --> [W][setup:95] Setting as a Wi-Fi Station .
+15:25:01.575 --> ......
+15:25:04.076 --> Running on IP 192.168.1.82, Channel 11, MAC address CC:40:E3:D5:9F:18
+15:25:05.308 --> [D][setup:144] Setup completed
+15:26:16.026 --> [D][loop:215] New client
+15:26:16.026 --> [D][loop:218] Client connected
+15:26:16.026 --> GET / HTTP/1.1
+15:26:27.058 --> [D][loop:215] New client
+15:26:27.058 --> [D][loop:218] Client connected
+15:26:27.058 --> GET /favicon.ico HTTP/1.1
+15:26:28.791 --> [D][loop:215] New client
+15:26:28.791 --> [D][loop:218] Client connected
 ```
 
 Enjoy!
