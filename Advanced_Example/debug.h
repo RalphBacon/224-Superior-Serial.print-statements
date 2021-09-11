@@ -19,6 +19,8 @@
     #define DEBUGLEVEL DEBUGLEVEL_DEBUGGING
 */
 
+#include <string>
+
 // User picks debugging level from this list
 #define DEBUGLEVEL_ERRORS 1
 #define DEBUGLEVEL_WARNINGS 2
@@ -26,7 +28,7 @@
 #define DEBUGLEVEL_VERBOSE 4
 #define DEBUGLEVEL_NONE 0
 
-// We want to debug everything! Overide this in your sketch 
+// We want to debug everything! Overide this in your sketch
 #ifndef DEBUGLEVEL
 #define DEBUGLEVEL DEBUGLEVEL_VERBOSE
 #warning Debug Level is set to default level. \
@@ -35,42 +37,80 @@ To change this, type in your sketch:   \
 before the #include statement
 #endif
 
-void debugNothing(...) {
+void debugNothing(...)
+{
     // This does nothing and will be zapped by the compiler
 }
 
+// By default we want a trace stamp output in the first instance
 bool traceStampRequired = true;
-#define traceStamp Serial.print("["); Serial.print(__FUNCTION__); Serial.print(":");Serial.print(__LINE__); Serial.print("] ");traceStampRequired=false;
+
+std::string debugStr("");
+
+// The tracestamp looks like [D][mainfunction:45]
+#define traceStamp(x, y, z)                            \
+    if (traceStampRequired)                            \
+    {                                                  \
+        Serial.print("[");                             \
+        Serial.print(x);                               \
+        Serial.print("]");                             \
+        Serial.print("[");                             \
+        Serial.print(__FUNCTION__);                    \
+        Serial.print(":");                             \
+        Serial.print(__LINE__);                        \
+        Serial.print("] ");                            \
+    }                                                  \
+    debugStr = y;                                      \
+    if (z || debugStr.find("\n") != std::string::npos) \
+        traceStampRequired = true;                     \
+    else                                               \
+        traceStampRequired = false;
 
 // This is a macro that turns simple (one string) Serial.println statements on and off
 #if DEBUGLEVEL > 0
-#define debugE(x) if(traceStampRequired) {traceStamp;} Serial.print(x)
-#define debuglnE(x) traceStampRequired=true; Serial.println(x)
+#define debugE(x)              \
+    traceStamp("E", x, false); \
+    Serial.print(x);
+#define debuglnE(x)           \
+    traceStamp("E", x, true); \
+    Serial.println(x)
 #else
 #define debugE(x)   // Nothing to see here
 #define debuglnE(x) // Or here
 #endif
 
 #if DEBUGLEVEL > 1
-#define debugW(x) if(traceStampRequired) {traceStamp;} Serial.print(x)
-#define debuglnW(x) traceStampRequired=true; Serial.println(x)
+#define debugW(x)              \
+    traceStamp("W", x, false); \
+    Serial.print(x);
+#define debuglnW(x)           \
+    traceStamp("W", x, true); \
+    Serial.println(x)
 #else
 #define debugW(x)   // Nothing to see here
 #define debuglnW(x) // Or here
 #endif
 
 #if DEBUGLEVEL > 2
-#define debugD(x) if(traceStampRequired) {traceStamp;} Serial.print(x)
-#define debuglnD(x) traceStampRequired=true; Serial.println(x)
+#define debugD(x)              \
+    traceStamp("D", x, false); \
+    Serial.print(x);
+#define debuglnD(x)           \
+    traceStamp("D", x, true); \
+    Serial.println(x)
 #else
 #define debugD(x)   /* Nothing to see here */
 #define debuglnD(x) // Or here
 #endif
 
 #if DEBUGLEVEL > 3
-#define debugV(x) if(traceStampRequired) {traceStamp;} Serial.print(x);
-#define debuglnV(x)  if(traceStampRequired) {traceStamp;} traceStampRequired=true; Serial.println(x)
+#define debugV(x)              \
+    traceStamp("V", x, false); \
+    Serial.print(x);
+#define debuglnV(x)           \
+    traceStamp("V", x, true); \
+    Serial.println(x);
 #else
-#define debugV(x)    debugNothing(x);
-#define debuglnV(x)  debugNothing(x);
+#define debugV(x) debugNothing(x);
+#define debuglnV(x) debugNothing(x);
 #endif
